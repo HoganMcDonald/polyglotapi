@@ -25,7 +25,7 @@ function split( langObject ) {
 }
 
 function getInfo( repos ) {
-  console.log('in get info');
+  // console.log('in get info');
   let resObj = getLanguages(repos);
   // if ('chart.js condition') {
   //   resObj = await split(resObj);
@@ -51,7 +51,46 @@ app.get('/:username', ( req, res ) => {
       res.status(500).send({message: 'something went wrong', error: error});
     } else {
       let results = getInfo(JSON.parse(body));
-      res.send(results);
+      /////////////////////////////////////////////////////////////
+      let languages = {};
+
+      for (var i = 0; i < results.length; i++) {
+
+        // http options
+        const options = {
+          url: results[i].languages_url,
+          headers: {
+            'Authorization': 'token ' + process.env.GITHUB_AUTH_TOKEN,
+            'User-Agent': 'request'
+          }
+        }; // end http options
+
+        request.get(options, ( err, response1, bod ) => {
+          if (err) {
+            res.status(500).send({message: 'something went wrong', error: error});
+          } else {
+            let languageObj = JSON.parse(bod)
+            for (var key in languageObj) {
+              // console.log('key', key);
+              // console.log(languageObj[key]);
+              console.log(typeof languageObj[key]);
+              if (languages.hasOwnProperty(key)) {
+                console.log('<<<<<<<<<<<<',languages[key]);
+                languages[key] += languageObj[key];
+              } else {
+                
+                languages[key] = languageObj[key];
+              }
+              console.log('>>>>>>>>>>>>>', languages);
+            }
+            // console.log(bod);
+          }
+        });
+
+      }
+
+
+      res.send(languages);
     }
   });
 
