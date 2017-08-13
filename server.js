@@ -25,7 +25,6 @@ function split( langObject ) {
 }
 
 function getInfo( repos ) {
-  // console.log('in get info');
   let resObj = getLanguages(repos);
   // if ('chart.js condition') {
   //   resObj = await split(resObj);
@@ -78,20 +77,15 @@ app.get('/:username', ( req, res ) => {
                 console.log('<<<<<<<<<<<<',languages[key]);
                 languages[key] += languageObj[key];
               } else {
-                
+
                 languages[key] = languageObj[key];
               }
               console.log('>>>>>>>>>>>>>', languages);
             }
-            // console.log(bod);
           }
         });
-
       }
-
-
       res.send(languages);
     }
   });
-
 });
