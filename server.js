@@ -4,8 +4,8 @@ require('dotenv').config({path:'./.env'});
 const express = require('express'),
   app = express(),
   request = require('request'),
-  bodyParser = require('body-parser');
-
+  bodyParser = require('body-parser'),
+gitColors = require('./colors.json');
 //uses
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -52,7 +52,7 @@ app.get('/:username', ( req, res ) => {
       let results = getInfo(JSON.parse(body));
       /////////////////////////////////////////////////////////////
       let languages = {};
-
+      let colors = [];
       for (var i = 0; i < results.length; i++) {
 
         // http options
@@ -79,13 +79,14 @@ app.get('/:username', ( req, res ) => {
               } else {
 
                 languages[key] = languageObj[key];
+                  colors.push(gitColors[key].color);
               }
-              console.log('>>>>>>>>>>>>>', languages);
+              console.log('>>>>>>>>>>>>>', languages, colors);
             }
           }
         });
       }
-      res.send(languages);
+      setTimeout(function(){ res.send({languages, colors}); }, 500);
     }
   });
 });
