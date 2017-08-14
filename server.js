@@ -26,7 +26,7 @@ app.get('/:username', (req, res) => {
 
   const user = req.params.username;
   let languages = {};
-  let colors = [];
+  let colors = {};
 
   // http options
   const options = {
@@ -60,7 +60,8 @@ app.get('/:username', (req, res) => {
               languages[key] += languageObj[key];
             } else {
               languages[key] = languageObj[key];
-              colors.push(gitColors[key].color);
+              colors[key] = gitColors[key].color;
+              // colors.push( gitColors[key].color );
             }
 
           }
